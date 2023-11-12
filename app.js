@@ -10,16 +10,21 @@ var indexRouter = require('./routes/index');
 var newMessageRouter = require('./routes/newMessage');
 
 var app = express();
+require('dotenv').config()
 
 // Set up mongoose connection
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false)
-const mongoDB = "mongodb+srv://admin:Qwe12138.@cluster0.mj6ixpn.mongodb.net/?retryWrites=true&w=majority";
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(mongoDB);
+  await mongoose.connect(process.env.mongoDb);
 }
 
+app.use(
+  cors({
+    origin:["https://localhost:3000", process.env.ORIGIN],
+  })
+);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
